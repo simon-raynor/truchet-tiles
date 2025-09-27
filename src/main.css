@@ -1,0 +1,160 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    height: 100vh;
+    width: 100vw;
+
+    overflow: hidden;
+}
+#stage {
+
+    --size: 3rem;
+
+    --colorOne: deepskyblue;
+    --colorTwo: deeppink;
+
+    --linewidthOne: 0.125rem;
+    --linecolorOne: black;
+    --linewidthTwo: 0.25rem;
+    --linecolorTwo: white;
+    --linewidthThree: 0.125rem;
+    --linecolorThree: black;
+
+    /* leave space for up to two extra per row (will be hidden by overflow) */
+    width: calc(100vw + var(--size) + var(--size));
+
+    /* force an odd number of columns so :nth-child plays nice */
+    grid-template-columns: var(--size) repeat(auto-fit, var(--size) var(--size));
+
+    display: grid;
+
+    /* offset checkerboard background to make the spins look better */
+    background: repeating-conic-gradient(var(--colorTwo) 0 25%, #0000 0 50%) 50% / 6rem 6rem
+        , var(--colorOne);
+    background-position-x: 1.5rem;
+}
+
+
+.tile {
+    --size: 3rem;
+
+    --step1: calc((var(--size) / 2) - (var(--linewidthA) / 2) - (var(--linewidthB) / 2) - (var(--linewidthC) / 2));
+    --step2: calc(var(--step1) + var(--linewidthA));
+    --step3: calc(var(--step2) + var(--linewidthB));
+    --step4: calc(var(--step3) + var(--linewidthC));
+
+    --corner-steps: var(--colorA)
+        , var(--colorA) var(--step1)
+        , var(--linecolorA) var(--step1)
+        , var(--linecolorA) var(--step2)
+        , var(--linecolorB) var(--step2)
+        , var(--linecolorB) var(--step3)
+        , var(--linecolorC) var(--step3)
+        , var(--linecolorC) var(--step4)
+        , transparent var(--step4);
+
+    height: var(--size);
+    width: var(--size);
+
+    background-size: var(--size);
+    background: radial-gradient(circle at 0 0, var(--corner-steps))
+        , radial-gradient(circle at 100% 100%, var(--corner-steps))
+        , var(--colorB);
+
+    transform: rotate(calc(var(--angle) * 1deg));
+
+    transition: transform 0.25s;
+
+    position: relative;
+}
+
+.tile.fork {
+    background: radial-gradient(circle at 0 0
+            , var(--colorA)
+            , var(--colorA) var(--step1)
+            , var(--linecolorA) var(--step1)
+            , var(--linecolorA) var(--step2)
+            , var(--linecolorB) var(--step2)
+            , var(--linecolorB) var(--step3)
+            , var(--linecolorC) var(--step3)
+            , var(--linecolorC) var(--step4)
+            , transparent var(--step4)
+        )
+        , radial-gradient(circle at 100% 0
+            , var(--colorB)
+            , var(--colorB) var(--step1)
+            , var(--linecolorC) var(--step1)
+            , var(--linecolorC) calc(var(--step1) + var(--linewidthC))
+            , var(--linecolorB) calc(var(--step1) + var(--linewidthC))
+            , var(--linecolorB) calc(var(--step1) + var(--linewidthB) + var(--linewidthC))
+            , var(--linecolorA) calc(var(--step1) + var(--linewidthB) + var(--linewidthC))
+            , var(--linecolorA) calc(var(--step1) + var(--linewidthA) + var(--linewidthB) + var(--linewidthC))
+            , transparent calc(var(--step1) + var(--linewidthA) + var(--linewidthB) + var(--linewidthC))
+        )
+        , linear-gradient(to left
+            , var(--colorA)
+            , var(--colorA) var(--step1)
+            , var(--linecolorA) var(--step1)
+            , var(--linecolorA) var(--step2)
+            , var(--linecolorB) var(--step2)
+            , var(--linecolorB) var(--step3)
+            , var(--linecolorC) var(--step3)
+            , var(--linecolorC) var(--step4)
+            , transparent var(--step4)
+        )
+        , var(--colorB);
+}
+
+.tile.a,
+.tile.b:nth-child(2n) {
+    --colorA: var(--colorOne);
+    --colorB: var(--colorTwo);
+
+    --linecolorA: var(--linecolorOne);
+    --linecolorB: var(--linecolorTwo);
+    --linecolorC: var(--linecolorThree);
+    --linewidthA: var(--linewidthOne);
+    --linewidthB: var(--linewidthTwo);
+    --linewidthC: var(--linewidthThree);
+}
+
+.tile.b,
+.tile.a:nth-child(2n) {
+    --colorA: var(--colorTwo);
+    --colorB: var(--colorOne);
+
+    --linecolorA: var(--linecolorThree);
+    --linecolorB: var(--linecolorTwo);
+    --linecolorC: var(--linecolorOne);
+    --linewidthA: var(--linewidthThree);
+    --linewidthB: var(--linewidthTwo);
+    --linewidthC: var(--linewidthOne);
+;
+}
+
+
+details {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+
+    padding: .75rem;
+    background: #112b;
+    backdrop-filter: blur(.25rem);
+    color: #ffd;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    margin-top: .75rem;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
