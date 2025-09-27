@@ -1,3 +1,7 @@
+:root {
+    font-size: 12px;
+}
+
 html,
 body {
     margin: 0;
@@ -7,20 +11,19 @@ body {
     width: 100vw;
 
     overflow: hidden;
+
+    --size: 36px;
 }
 #stage {
-
-    --size: 3rem;
-
+    /* 
     --colorOne: deepskyblue;
     --colorTwo: deeppink;
-
-    --linewidthOne: 0.125rem;
+    --linewidthOne: 0.125em;
     --linecolorOne: black;
-    --linewidthTwo: 0.25rem;
+    --linewidthTwo: 0.25em;
     --linecolorTwo: white;
-    --linewidthThree: 0.125rem;
-    --linecolorThree: black;
+    --linewidthThree: 0.125em;
+    --linecolorThree: black; */
 
     /* leave space for up to two extra per row (will be hidden by overflow) */
     width: calc(100vw + var(--size) + var(--size));
@@ -31,15 +34,14 @@ body {
     display: grid;
 
     /* offset checkerboard background to make the spins look better */
-    background: repeating-conic-gradient(var(--colorTwo) 0 25%, #0000 0 50%) 50% / 6rem 6rem
+    background: red;
+    /* background: repeating-conic-gradient(var(--colorTwo) 0 25%, #0000 0 50%) 50% / 6em 6em
         , var(--colorOne);
-    background-position-x: 1.5rem;
+    background-position-x: 1.5em; */
 }
 
 
 .tile {
-    --size: 3rem;
-
     --step1: calc((var(--size) / 2) - (var(--linewidthA) / 2) - (var(--linewidthB) / 2) - (var(--linewidthC) / 2));
     --step2: calc(var(--step1) + var(--linewidthA));
     --step3: calc(var(--step2) + var(--linewidthB));
@@ -54,6 +56,8 @@ body {
         , var(--linecolorC) var(--step3)
         , var(--linecolorC) var(--step4)
         , transparent var(--step4);
+    
+    font-size: var(--size);
 
     height: var(--size);
     width: var(--size);
@@ -134,27 +138,69 @@ body {
 ;
 }
 
+#controls {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    right: 1em;
+
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: .75em;
+    align-items: start;
+
+    pointer-events: none;
+
+    font-family: monospace;
+    font-weight: bold;
+}
+
+#presets {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    gap: .75em;
+}
+
+details,
+button {
+    background: #112b;
+    backdrop-filter: blur(.25em);
+    color: #ffd;
+    border-radius: .333em;
+
+    pointer-events: all;
+}
 
 details {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
+    width: max-content;
 
-    padding: .75rem;
-    background: #112b;
-    backdrop-filter: blur(.25rem);
-    color: #ffd;
+    max-height: calc(100vh - 3.5em);
+    overflow: auto;
+}
+
+summary {
+    line-height: 2em;
+    padding: .75em 1.5em;
+}
+
+button {
+    border: none;
+    padding: .25em;
+}
+button .tile {
+    --size: 36px;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: .75rem;
-    margin-top: .75rem;
+    gap: 1.25em;
+    padding: 0 .75em 1.5em;
 }
 
 label {
     display: flex;
     flex-direction: column;
-    gap: .25rem;
+    gap: .25em;
 }

@@ -1,6 +1,43 @@
+import presets from './presets.json';
+
+
+const presetNames = Object.keys(presets);
+
 
 const stage = document.getElementById('stage');
+const presetwrapper = document.querySelector('#presets');
+const form = document.querySelector('form');
 
+
+function applyPreset(presetname, element = stage) {
+    const preset = presets[presetname];
+
+    for (const prop in preset) {
+        element.style.setProperty(`--${prop}`, preset[prop]);
+    }
+
+    initialiseForm();
+}
+
+
+presetNames.forEach(name => {
+    const button = document.createElement('button');
+    const tile = document.createElement('div');
+
+    button.append(tile);
+
+    tile.classList.add('tile', 'a');
+
+    applyPreset(name, button);
+
+    button.addEventListener('click', () => applyPreset(name));
+
+    presetwrapper.append(button);
+});
+
+
+const rn = Math.floor(Math.random() * presetNames.length) % presetNames.length;
+applyPreset(presetNames[rn]);
 
 
 function fillContainer() {
@@ -22,7 +59,7 @@ function createTile() {
     
     turnTile(tile, Math.floor(Math.random() * 4) * 90);
 
-    if (Math.random() > 0.9) {
+    if (Math.random() > 0.75) {
         tile.classList.add('fork');
     }
 
@@ -52,9 +89,6 @@ stage.addEventListener('click', evt => {
 
 
 // controls
-
-const form = document.querySelector('form');
-
 form.addEventListener('submit', evt => evt.preventDefault());
 
 form.addEventListener('change', evt => {
@@ -63,9 +97,10 @@ form.addEventListener('change', evt => {
 
     if (!property) return false;
 
-    const value = property.indexOf('width') > -1
-                ? `${target.value}rem`
-                : target.value;
+    let value = target.value;
+    
+    if (property.indexOf('width') > -1) value = `${target.value}em`;
+    if (property.indexOf('size') > -1) value = `${target.value}px`;
 
     stage.style.setProperty(`--${property}`, value);
 });
@@ -76,9 +111,9 @@ function initialiseForm() {
     Array.from(form.elements).forEach(
         fld => {
             const name = fld.getAttribute('name');
-            let value = initialStyles.getPropertyValue(`--${name}`)
+            let value = initialStyles.getPropertyValue(`--${name}`);
 
-            if (name.indexOf('width') > -1) {
+            if (name.indexOf('width') > -1 || name.indexOf('size') > -1) {
                 value = Number(value.replace(/[a-zA-Z]/g, ''));
             }
             console.log(name, value)
@@ -86,5 +121,3 @@ function initialiseForm() {
         }
     );
 }
-
-initialiseForm();

@@ -1,0 +1,57 @@
+{
+    "default": {
+        "size": "32px",
+        "colorOne": "deepskyblue",
+        "colorTwo": "deeppink",
+        "linecolorOne": "black",
+        "linewidthOne": "0.0625em",
+        "linecolorTwo": "white",
+        "linewidthTwo": "0.125em",
+        "linecolorThree": "black",
+        "linewidthThree": "0.0625em"
+    },
+    "red": {
+        "size": "48px",
+        "colorOne": "black",
+        "colorTwo": "white",
+        "linecolorOne": "hsl(0 100% 25%)",
+        "linewidthOne": "0.20em",
+        "linecolorTwo": "hsl(0 100% 50%)",
+        "linewidthTwo": "0.20em",
+        "linecolorThree": "hsl(0 100% 75%)",
+        "linewidthThree": "0.20em"
+    },
+    "uneven": {
+        "size": "32px",
+        "colorOne": "black",
+        "colorTwo": "white",
+        "linecolorOne": "black",
+        "linewidthOne": "0.3em",
+        "linecolorTwo": "black",
+        "linewidthTwo": "0em",
+        "linecolorThree": "black",
+        "linewidthThree": "0em"
+    },
+    "lime": {
+        "size": "64px",
+        "colorOne": "#ff8",
+        "colorTwo": "#0f0",
+        "linecolorOne": "yellow",
+        "linewidthOne": ".125em",
+        "linecolorTwo": "#0f0",
+        "linewidthTwo": ".25em",
+        "linecolorThree": "green",
+        "linewidthThree": ".125em"
+    },
+    "line": {
+        "size": "32px",
+        "colorOne": "pink",
+        "colorTwo": "pink",
+        "linecolorOne": "indigo",
+        "linewidthOne": ".25em",
+        "linecolorTwo": "white",
+        "linewidthTwo": "0em",
+        "linecolorThree": "white",
+        "linewidthThree": "0em"
+    }
+}
