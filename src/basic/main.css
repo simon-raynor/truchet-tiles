@@ -33,8 +33,8 @@ body {
 
     display: grid;
 
+    background: var(--colorOne);
     /* offset checkerboard background to make the spins look better */
-    background: red;
     /* background: repeating-conic-gradient(var(--colorTwo) 0 25%, #0000 0 50%) 50% / 6em 6em
         , var(--colorOne);
     background-position-x: 1.5em; */
