@@ -5,7 +5,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-import { COLOR_BACKGROUND } from "./constants";
+import { BLOOM, COLOR_BACKGROUND, FOG, LIGHT_COUNT, RAINBOW_LIGHTS } from "./constants";
 
 
 // initialise scene
@@ -23,19 +23,29 @@ document.getElementById('stage')?.appendChild(renderer.domElement);
 
 
 // add fog for aesthetics
-const fog = new Fog(COLOR_BACKGROUND, 10, 20);
-scene.fog = fog;
+if (FOG) {
+    const fog = new Fog(COLOR_BACKGROUND, 10, 20);
+    scene.fog = fog;
+}
 
 
-// light
-//const hlight = new HemisphereLight( 0xff8888, 0x00ffff, 1 );
-const hlight = new HemisphereLight( 0xff0000, 0x00ff00, 1 );
-scene.add( hlight );
 
-const dlight = new DirectionalLight( 0x00ff00, 1 );
-dlight.position.set(10, 0, 0)
-scene.add( dlight );
+if (RAINBOW_LIGHTS) {
+    for (let i = 0; i < LIGHT_COUNT; i++) {
+        const theta = i * Math.PI * 2 / LIGHT_COUNT;
 
+        const dlight = new DirectionalLight( new Color().setHSL(theta / (Math.PI * 2), 1, 0.5), 1 );
+        dlight.position.set(Math.sin(theta), 0, Math.cos(theta));
+        scene.add( dlight );
+    }
+} else {
+    const hlight = new HemisphereLight( 0xffffee, 0x444444, 1 );
+    scene.add( hlight );
+
+    const dlight = new DirectionalLight( 0xffffff, 1 );
+    dlight.position.set(1, 1, 1);
+    scene.add( dlight );
+}
 
 
 // create camera
@@ -46,13 +56,14 @@ const camera = new PerspectiveCamera(
     750
 );
 
-camera.position.set(0, 1, -10);
+camera.position.set(0, 3, -10);
 camera.lookAt(new Vector3(0, 0, 0));
 
 
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.enableDamping = true;
 controls.autoRotate = true;
+controls.autoRotateSpeed = 1;
 
 
 
@@ -60,14 +71,19 @@ const renderScene = new RenderPass( scene, camera );
 
 const bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio ), 1.5, 0.4, 0.85 );
 bloomPass.threshold = 0.1;
-bloomPass.strength = 1;
+bloomPass.strength = .5;
 bloomPass.radius = 0;
 
 const outputPass = new OutputPass();
 
+
 const composer = new EffectComposer( renderer );
 composer.addPass( renderScene );
-composer.addPass( bloomPass );
+
+if (BLOOM) {
+    composer.addPass( bloomPass );
+}
+
 composer.addPass( outputPass );
 
 
