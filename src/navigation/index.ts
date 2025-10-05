@@ -8,8 +8,9 @@ import styles from './styles.module.css';
 
 
 const pages = {
-    '/': 'Home',
+    '/': 'Basic',
     '/advanced/': 'Advanced',
+    '/multisize/': 'Multisize',
     '/3d/': '3D'
 }
 

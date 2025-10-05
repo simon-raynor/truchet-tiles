@@ -8,8 +8,19 @@
     position: fixed;
     bottom: 1em;
     right: 1em;
+    
+    font-family: monospace;
 }
 
 .nav a {
-    background: red;
+    background: #112b;
+    backdrop-filter: blur(.25em);
+    color: #ffd;
+    border-radius: .333em;
+
+    padding: 0.5em 1em;
+}
+
+.nav a:not([href]) {
+    font-weight: bold;
 }
