@@ -8,7 +8,18 @@ const PCT_BIG = 0.333;
 const PCT_MID = 0.5;
 
 
-function strokeOver(ctx: CanvasRenderingContext2D, path: Path2D, color: string = 'oklch(100% 100% 25)') {
+// N.B. can only be different if not using small tiles
+// TODO: create alt/inverse version of small tiles to
+//      make edges match up to multicolor BGs
+const BG1 = 'white';
+const BG2 = 'white';
+
+const LINE1 = 'black';
+const LINE2 = 'white';
+
+
+
+function strokeOver(ctx: CanvasRenderingContext2D, path: Path2D, color: string = LINE2) {
     ctx.beginPath();
     ctx.lineCap = 'round';
     ctx.strokeStyle = color;
@@ -16,7 +27,7 @@ function strokeOver(ctx: CanvasRenderingContext2D, path: Path2D, color: string =
     ctx.stroke(path);
 }
 
-function strokeUnder(ctx: CanvasRenderingContext2D, path: Path2D, color: string = 'white') {
+function strokeUnder(ctx: CanvasRenderingContext2D, path: Path2D, color: string = LINE1) {
     ctx.beginPath();
     ctx.lineCap = 'butt';
     ctx.strokeStyle = color;
@@ -28,7 +39,7 @@ function strokeUnder(ctx: CanvasRenderingContext2D, path: Path2D, color: string 
 
 
 
-function create(scale: number = 1) {
+function create(scale: number = 1, alt = false) {
     const fullsize = SIZE * scale;
 
     const canvas = document.createElement('canvas');
@@ -36,10 +47,10 @@ function create(scale: number = 1) {
     canvas.width = fullsize;
 
 
-    const ctx = canvas.getContext('2d');
-
     const firstHalves = [];
     const secondHalves = [];
+
+    const fills = [];
 
 
     for (let i = 0; i < scale; i++) {
@@ -71,8 +82,28 @@ function create(scale: number = 1) {
             firstHalves.push(h2, h4);
             secondHalves.unshift(h3, h1);
         }
+
+        fills.push(
+            new Path2D(`
+                M0 0 L${n} 0 A${n} ${n} 0 0 1 0 ${n}Z
+            `),
+            new Path2D(`
+                M${fullsize} ${fullsize} L${fullsize - n} ${fullsize} A${n} ${n} 0 0 1 ${fullsize} ${fullsize - n}Z
+            `)
+        );
     }
 
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = alt ? BG2 : BG1;
+    ctx.fillRect(0, 0, fullsize, fullsize);
+
+    fills.reverse().forEach((path, idx) => {
+        ctx.beginPath();
+        ctx.fillStyle = Math.floor(idx / 2) % 2 ? (alt ? BG2 : BG1) : (alt ? BG1 : BG2);
+        //ctx.globalAlpha = idx % 2 ? 1 : 0.5;
+        ctx.fill(path);
+    });
     firstHalves.forEach(path => {
         strokeUnder(ctx, path);
         strokeOver(ctx, path);
@@ -102,6 +133,11 @@ const drawBig = create(4);
 const drawMid = create(2);
 const drawSmall = create();
 
+// FIXME: needs to alternate based on rotation I believe, need
+//      to look at the logic in my working version see where I've
+//      gone wrong
+const drawSmallAlt = create(1, true);
+
 
 
 
@@ -124,8 +160,8 @@ for (let x = 0; x <= vmax; x += 4 * SIZE) {
                         drawMid(x1, y1);
                     } else {
                         drawSmall(x1, y1);
-                        drawSmall(x1 + SIZE, y1);
-                        drawSmall(x1, y1 + SIZE);
+                        drawSmallAlt(x1 + SIZE, y1);
+                        drawSmallAlt(x1, y1 + SIZE);
                         drawSmall(x1 + SIZE, y1 + SIZE);
                     }
                 }
