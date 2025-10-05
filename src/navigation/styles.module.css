@@ -1,0 +1,15 @@
+.nav {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap-reverse;
+
+    gap: 1em;
+
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+}
+
+.nav a {
+    background: red;
+}
