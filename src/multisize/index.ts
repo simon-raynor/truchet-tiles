@@ -32,8 +32,8 @@ function create(scale: number = 1) {
     const fullsize = SIZE * scale;
 
     const canvas = document.createElement('canvas');
-    canvas.height = fullsize// * window.devicePixelRatio;
-    canvas.width = fullsize// * window.devicePixelRatio;
+    canvas.height = fullsize;
+    canvas.width = fullsize;
 
 
     const ctx = canvas.getContext('2d');
@@ -63,6 +63,7 @@ function create(scale: number = 1) {
                     M${fullsize - nCos} ${fullsize - nSin} A${n} ${n} 0 0 1 ${fullsize} ${fullsize - n}
                 `);
 
+        // alternate when we draw the start/end of each arc
         if (i % 2) {
             firstHalves.push(h1, h3);
             secondHalves.unshift(h4, h2);
