@@ -56,14 +56,14 @@ const camera = new PerspectiveCamera(
     750
 );
 
-camera.position.set(0, 3, -10);
+camera.position.set(0, 15, -25);
 camera.lookAt(new Vector3(0, 0, 0));
 
 
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.enableDamping = true;
-controls.autoRotate = true;
-controls.autoRotateSpeed = 1;
+//controls.autoRotate = true;
+//controls.autoRotateSpeed = 1;
 
 
 

@@ -1,9 +1,9 @@
 
 
 import { DoubleSide, InstancedMesh, MeshStandardMaterial, Object3D, QuadraticBezierCurve3, TubeGeometry, Vector3 } from "three";
-import { camera, controls, renderer, scene } from "./setup";
 import { RATIO } from "./constants";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { getMaterial } from "./material";
 
 
 
@@ -58,8 +58,8 @@ const tileGeom = mergeGeometries(tubes);
 
 
 
-export function getRhombicMesh(perSide = 5) {
-    const count = perSide * 2;
+export function getRhombicMesh(perSide = 5, color: number = 0xff1122) {
+    const count = perSide;
     const total = count * count * count;
 
 
@@ -67,7 +67,7 @@ export function getRhombicMesh(perSide = 5) {
 
     const mesh = new InstancedMesh(
         tileGeom, 
-        new MeshStandardMaterial({ color: 0xff1122, side: DoubleSide }),
+        getMaterial(color),
         total
     );
     //mesh.instanceMatrix.setUsage( DynamicDrawUsage ); // will be updated every frame
@@ -77,10 +77,8 @@ export function getRhombicMesh(perSide = 5) {
     const idir = new Vector3(2, 0, 2);
     const jdir = new Vector3(2, 2, 0);
     const kdir = new Vector3(0, 2, 2);
-
-    let centre;
-
-    const halfsize = Math.round((count - 1) / 2);
+    
+    const offset = Math.floor(count / 2);
 
 
     const dummy = new Object3D();
@@ -91,17 +89,13 @@ export function getRhombicMesh(perSide = 5) {
         for (let j = 0; j < count; j++) {
             for (let k = 0; k < count; k++) {
                 dummy.position.set( 0, 0, 0, )
-                    .add(idir.clone().multiplyScalar(i))
-                    .add(jdir.clone().multiplyScalar(j))
-                    .add(kdir.clone().multiplyScalar(k));
+                    .add(idir.clone().multiplyScalar(i - offset))
+                    .add(jdir.clone().multiplyScalar(j - offset))
+                    .add(kdir.clone().multiplyScalar(k - offset));
 
                 dummy.rotateX(Math.floor(Math.random() * 4) * Math.PI / 2);
                 dummy.rotateY(Math.floor(Math.random() * 4) * Math.PI / 2);
                 dummy.rotateZ(Math.floor(Math.random() * 4) * Math.PI / 2);
-
-                if (i === halfsize && j === halfsize && k === halfsize) {
-                    centre = dummy.position.clone();
-                }
 
                 dummy.updateMatrix();
                 mesh.setMatrixAt( idx++, dummy.matrix );
@@ -109,26 +103,5 @@ export function getRhombicMesh(perSide = 5) {
         }
     }
 
-    mesh.position.sub(centre!);
-
     return mesh;
 }
-
-
-
-
-
-
-
-
-function animate() {
-
-    requestAnimationFrame(animate);
-
-    controls.update();
-
-    renderer.render();
-
-}
-
-animate();

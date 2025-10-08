@@ -1,8 +1,7 @@
 export const COLOR_BACKGROUND = 0x161122;
 
 
-export const SIZE = 1;
-export const RATIO = .05;
+export const RATIO = .1;
 
 export const BLOOM = true;
 
