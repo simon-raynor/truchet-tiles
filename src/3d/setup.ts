@@ -56,7 +56,7 @@ const camera = new PerspectiveCamera(
     750
 );
 
-camera.position.set(0, 15, -25);
+camera.position.set(0, 0, -40);
 camera.lookAt(new Vector3(0, 0, 0));
 
 

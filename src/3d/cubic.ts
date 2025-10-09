@@ -26,8 +26,7 @@ const truchetGeom = mergeGeometries([tubeGeom, clone1, clone2]);
 
 
 export function getCubicMesh(perSide = 5, color = 0x3322ff) {
-    const halfcount = perSide;
-    const total = perSide <= 1 ? 1 : Math.pow(1 + (halfcount * 2), 3);
+    const total = Math.pow(perSide, 3);
 
 
     const mesh = new InstancedMesh(
