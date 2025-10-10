@@ -3,11 +3,47 @@
 <head>
     <title>Advanced Truchet Tiles</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- <link rel="stylesheet" href="/src/complex/main.css" /> -->
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+        .previews {
+            display: flex;
+            gap: 0.5em;
+            align-items: start;
+            flex-wrap: wrap;
+
+            padding: 0.5em;
+        }
+        .tile {
+            border: 0.5em solid white;
+            outline: 1px black;
+            box-shadow: 0 0.25em 0.5em black;
+            background: white;
+        }
+
+        .main {
+            object-fit: cover;
+            position: fixed;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-    <div id="stage"></div>
-    <div id="previews"></div>
     <script src="/src/multisize/index.ts" type="module"></script>
     <script src="/src/navigation/index.js" type="module"></script>
 </body>
