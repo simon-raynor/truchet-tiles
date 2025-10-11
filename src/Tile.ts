@@ -1,4 +1,4 @@
-const SIZE = 64;
+const SIZE = 32;
 
 
 export default class Tile {
@@ -30,16 +30,18 @@ export default class Tile {
         this.canvas.classList.add('tile');
         this.altcanvas.classList.add('tile');
 
+        this.canvas.style.setProperty('--count', this.count.toString());
+
         this.create();
     }
 
-    linecolor1: string = 'oklch(0 0 70)';
-    linecolor2: string = 'oklch(1 0 100)';
-    bgcolor1: string = 'oklch(.5 .7 70)';
-    bgcolor2: string = 'oklch(.5 1 230)';
+    linecolor1: string = 'orange';
+    linecolor2: string = 'red';
+    bgcolor1: string = 'black';//'oklch(.5 .7 70)';
+    bgcolor2: string = 'white';//'oklch(.5 1 230)';
 
-    linewidth1 = SIZE / 9;
-    linewidth2 = SIZE / 5;
+    linewidth1 = 0;//SIZE / 16;
+    linewidth2 = 0;//SIZE / 4;
 
     create() {
         const count = this.count;
@@ -92,24 +94,24 @@ export default class Tile {
 
         fills.reverse();
 
-        this.fill(fills);
-        this.fill(fills, true);
+        this.#fill(fills);
+        this.#fill(fills, true);
 
         firstHalves.forEach(path => {
-            this.strokeUnder(path);
-            this.strokeOver(path);
-            this.strokeUnder(path, this.altcontext);
-            this.strokeOver(path, this.altcontext);
+            this.#strokeUnder(path);
+            this.#strokeOver(path);
+            this.#strokeUnder(path, this.altcontext);
+            this.#strokeOver(path, this.altcontext);
         });
         secondHalves.forEach(path => {
-            this.strokeUnder(path);
-            this.strokeOver(path);
-            this.strokeUnder(path, this.altcontext);
-            this.strokeOver(path, this.altcontext);
+            this.#strokeUnder(path);
+            this.#strokeOver(path);
+            this.#strokeUnder(path, this.altcontext);
+            this.#strokeOver(path, this.altcontext);
         });
     }
 
-    fill(fills: Path2D[], alt = false) {
+    #fill(fills: Path2D[], alt = false) {
         const ctx = alt ? this.altcontext : this.context;
 
         ctx.fillStyle = alt ? this.bgcolor2 : this.bgcolor1;
@@ -127,7 +129,8 @@ export default class Tile {
         ctx.strokeRect(0,0,this.fullsize,this.fullsize); */
     }
 
-    strokeOver(path: Path2D, ctx = this.context) {
+    #strokeOver(path: Path2D, ctx = this.context) {
+        if (!this.linewidth1) return;
         ctx.beginPath();
         ctx.lineCap = 'round';
         ctx.strokeStyle = this.linecolor1;
@@ -135,7 +138,8 @@ export default class Tile {
         ctx.stroke(path);
     }
 
-    strokeUnder(path: Path2D, ctx = this.context) {
+    #strokeUnder(path: Path2D, ctx = this.context) {
+        if (!this.linewidth2) return;
         ctx.beginPath();
         ctx.lineCap = 'butt';
         ctx.strokeStyle = this.linecolor2;

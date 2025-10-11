@@ -5,31 +5,37 @@ const tile1 = new Tile(1);
 const tile2 = new Tile(2);
 const tile3 = new Tile(3);
 const tile4 = new Tile(4);
+const tile6 = new Tile(6);
+const tile8 = new Tile(8);
 
-const tiles = [tile1 , tile2, tile3/* , tile4 */];
+const tiles = [tile1 , tile2, tile3, /* tile4, tile6, tile8 */];
 
 
 const previews = document.createElement('div');
 previews.append(...tiles.reverse().flatMap(t => [t.canvas, t.altcanvas]));
 previews.classList.add('previews');
-//document.body.append(previews);
+document.body.append(previews);
 
 
 
 const outputcanvas = document.createElement('canvas');
 const vmax = Math.max(window.innerHeight, window.innerWidth) * window.devicePixelRatio;
-outputcanvas.height = vmax;
-outputcanvas.width = vmax;
 
-outputcanvas.style.height = `${Math.max(window.innerHeight, window.innerWidth)}px`;
-outputcanvas.style.width = `${Math.max(window.innerHeight, window.innerWidth)}px`;
+// we learned to have odd row counts from the css version
+const gridcount = Math.floor(Math.ceil(vmax / Tile.SIZE)/2) * 2 + 1;
+
+
+outputcanvas.height = gridcount * Tile.SIZE;
+outputcanvas.width = gridcount * Tile.SIZE;
+
+outputcanvas.style.height = `${gridcount * Tile.SIZE / window.devicePixelRatio}px`;
+outputcanvas.style.width = `${gridcount * Tile.SIZE / window.devicePixelRatio}px`;
 
 outputcanvas.classList.add('main')
 
 const outctx = outputcanvas.getContext('2d');
 
-// we learned to have odd row counts from the css version
-const gridcount = Math.floor(Math.ceil(vmax / Tile.SIZE)/2) * 2 + 1;
+
 
 const grid: Tile[] = [];
 
