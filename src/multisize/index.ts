@@ -8,7 +8,7 @@ const tile4 = new Tile(4);
 const tile6 = new Tile(6);
 const tile8 = new Tile(8);
 
-const tiles = [tile1 , tile2, tile3, /* tile4, tile6, tile8 */];
+const tiles = [tile1 , tile2, tile3, tile4, tile6, tile8];
 
 
 const previews = document.createElement('div');
